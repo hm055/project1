@@ -1,0 +1,326 @@
+/* 비회원 (customer) */
+CREATE TABLE customer (
+	customer_no NUMBER NOT NULL, /* 비회원번호 */
+	customer_name VARCHAR(50), /* 이름 */
+	customer_gender VARCHAR(10), /* 성별 */
+	customer_tel VARCHAR(11), /* 전화번호 */
+	customer_addr VARCHAR(200), /* 주소 */
+	customer_addr2 VARCHAR(100), /* 상세주소 */
+	customer_addr3 NUMBER /* 우편번호 */
+);
+
+ALTER TABLE customer
+	ADD
+		CONSTRAINT PK_customer
+		PRIMARY KEY (
+			customer_no
+
+
+
+		);
+
+/* 비회원번호를 부여하여(시퀀스 이용해야될거같음), 신규 비회원 추가*/
+INSERT INTO customer(customer_no,customer_name,customer_gender,customer_tel,customer_addr,customer_adde2,customer_addr3)
+VALUES(비회원번호,이름,성별,전화번호,주소,상세주소,우편번호)
+
+
+/* 비회원번호를 통한 비회원 (customer)  정보 삭제*/
+DELETE FROM customer
+WHERE customer_no=?;
+
+
+/* 비회원번호를 통한 비회원 (customer)  정보 수정*/
+UPDATE  customer
+SET (수정할 컬럼명)=(수정할 값)
+WHERE customer_no=?;
+
+
+=======================================================================
+
+
+/* 장바구니 (cart) */
+CREATE TABLE cart (
+	customer_no NUMBER NOT NULL, /* 비회원번호 */
+	cart_no NUMBER NOT NULL, /* 장바구니 번호 */
+	member_id VARCHAR(15) NOT NULL, /* 아이디 */
+	goods_name VARCHAR(200), /* 상품이름 */
+	goods_no NUMBER, /* 상품번호 */
+	cart_cnt NUMBER, /* 상품갯수 */
+	order_date DATE /* 주문날짜 */
+);
+
+/* 비회원 이 장바구니에 물품 추가 */ (장바구니에 담기 버튼을 누르는 순간 생성됨)
+INSERT INTO cart(customer_no, cart_no, goods_name, goods_no, goods_cnt, order_date
+VALUES(비회원번호, 장바구니 번호, 상품명, 상품번호, 상품갯수, 주문날짜)
+/*
+
+/* 회원 이 장바구니에 물품 추가 */ (장바구니에 담기 버튼을 누르는 순간 생성됨)
+INSERT INTO cart(user_id, cart_no, goods_name, goods_no, cart_cnt, order_date
+VALUES(비회원번호, 장바구니 번호, 상품명, 상품번호, 상품갯수, 주문날짜)
+
+/* 
+
+/* 고객(회원,비회원)이 장바구니에 담긴 물품 갯수 수정 */ (해당장바구니 번호와 상품명을 가져와서 고객이 선택한 물품의 갯수 수정), (장바구니 번호는 회원/비회원이 통합으로 사용하는 것임)(이것도 시퀀스 사용해야 될듯함)
+UPDATE cart
+SET goods_cnt=1
+WHERE cart_no=2, goods_name='상품명'
+*/
+
+
+
+ALTER TABLE cart
+	ADD
+		CONSTRAINT PK_cart
+		PRIMARY KEY (
+			cart_no
+		);
+
+
+=======================================================================
+
+/* 회원(member) */
+CREATE TABLE member (
+	member_id VARCHAR(15) NOT NULL, /* 아이디 */
+	member_pass VARCHAR(50), /* 비밀번호 */
+	member_name VARCHAR(50), /* 이름 */
+	member_gender VARCHAR(10), /* 성별 */
+	member_tel VARCHAR(11), /* 전화번호 */
+	member_addr VARCHAR(200), /* 주소 */
+	member_addr2 VARCHAR(100), /* 상세주소 */
+	member_addr3 NUMBER, /* 우편번호 */
+	member_order VARCHAR(200), /* 구매내역 */
+	member_grade VARCHAR(10) /* 회원등급 */
+);
+
+ALTER TABLE member
+	ADD
+		CONSTRAINT PK_member
+		PRIMARY KEY (
+			member_id
+		);
+
+
+/* 회원번호를 부여하여(시퀀스 이용해야될거같음), 신규 회원 추가*/
+INSERT INTO customer(member_id, member_pass, emember_name,member_gender,member_tel, member_addr, member_addr2, member_addr3, member_order, member_grade)
+VALUES(아이디,비밀번호,이름,성별,전화번호,주소,상세주소,우편번호,구매내역,회원등급)
+
+/* 회원 ID값을 가져와, 회원정보 수정 */
+UPDATE member
+SET (수정할 컬럼)=(수정할 값)
+WHERE member_id=?
+
+/* 회원 ID값을 가져와, 회원정보 삭제 (회원탈퇴) */
+DELETE FROM member
+WHERE member_id=?
+
+
+
+===============================================================================
+
+
+/* 후기(review) */
+CREATE TABLE review (
+	review_no NUMBER NOT NULL, /* 후기번호 */
+	goods_no NUMBER, /* 상품번호 */
+	goods_review VARCHAR(1000), /* 상품후기 */
+	review_content VARCHAR(1000), /* 후기내용 */
+	review_date DATE /* 후기날짜 */
+);
+
+ALTER TABLE review
+	ADD
+		CONSTRAINT PK_review
+		PRIMARY KEY (
+			review_no
+		);
+
+/* 후기(review) 추가 */
+INSERT INTO review (review_no,goods_no,doogs_review, review_content, review_date)
+VALUES(후기번호, 상품번호, 상품후기, 후기내용, 후기날짜)
+
+
+/* 후기 번호 입력하여 후기(review) 내용을 수정 */
+
+UPDATE review
+SET review_content
+WHERE review_no=?
+
+
+/* 사용자가 입력한 후기(review) 내용 삭제 */
+
+DELETE FROM review
+WHERE review_no=?
+              
+==================================================================================
+
+/* 상품(goods) */
+CREATE TABLE goods (
+	goods_no NUMBER NOT NULL, /* 상품번호 */
+	goods_name VARCHAR(200), /* 상품이름 */
+	goods_cnt NUMBER, /* 수량 */
+	goods_price NUMBER, /* 가격 */
+	goods_times NUMBER, /* 조회수 */
+	goods_detatils VARCHAR(1000), /* 설명 */
+	goods_image VARCHAR(100) /* 이미지이름 */
+);
+
+/* 상품(goods) 추가 */
+INSERT INTO goods(goods_no, goods_name, goods_cunt, goods_price, goods_times, goods_details, goods_image)
+VALUES (상품번호, 상품이름, 재고(수량), 가격, 조회수, 설명, 이미지이름)
+
+/* 관리자가 상품번호를 입력하여, 해당하는 상품(goods)의 정보 수정 */
+UPDATE goods
+SET (수정할 컬럼) = (수정할 내용)
+WHERE goods_no=?
+
+/* 관리자가 상품번호를 입력하여, 해당하는 상품(goods)의 정보 삭제 */
+DELETE FROM goods
+WHERE goods_no=?
+
+
+
+ALTER TABLE goods
+	ADD
+		CONSTRAINT PK_goods
+		PRIMARY KEY (
+			goods_no
+		);
+========================================================================
+
+
+/* 용기매장리스트(shop_list) */
+CREATE TABLE shop_list (
+	shop_no NUMBER NOT NULL, /* 매장지정번호 */
+	shop_addr VARCHAR(200), /* 상세주소 */
+	shop_name VARCHAR(50), /* 가게명 */
+	shop_menu VARCHAR(100), /* 대표메뉴 */
+	goods_size VARCHAR(30), /* 메뉴별 용기사이즈 */
+	shop_image VARCHAR(100), /* 이미지 이름 */
+	shop_tel VARCHAR(11), /* 가게 전화번호 */
+	goods_no NUMBER, /* 상품번호 */
+	loc_sn NUMBER /* 지역고유번호 */
+);
+
+ALTER TABLE shop_list
+	ADD
+		CONSTRAINT PK_shop_list
+		PRIMARY KEY (
+			shop_no
+		);
+
+/* 관리자가 용기내캠페인에 참여하는 신규 매장 추가 (매장지정번호는 시퀀스 이용해야할 것 같음) */
+
+INSERT INTO shop_list(shop_no, shop_addr, shp_name, shop<menu, goods_size, shop_image, shop_tel, goods_no, loc_sn)
+VALUES(매장지정번호, 상세주소, 가게명, 대표메뉴, 메뉴별 용기사이즈, 이미지 이름, 가게 전화번호, 상품번호, 지역고유번호)
+
+
+/* 관리자가 매장 지정번호를 입력하여, 용기내 캠페인에 참여하는 매장 정보 수정 */
+UPDATE shop_list
+SET (수정할 컬럼) = (수정할 내용)
+WHERE shop_no = ?
+
+
+/* 관리자가 용기내 캠페인 매장의 정보(컬럼)를 삭제 */
+
+DELETE FROM shop_list
+WHERE shop_no=?
+ 
+=============================================
+/* 지역 (location) */
+CREATE TABLE location (
+	loc_sn NUMBER NOT NULL, /* 지역고유번호 */
+	loc_name VARCHAR(50) /* 지역이름 */
+);
+
+
+
+ALTER TABLE location
+	ADD
+		CONSTRAINT PK_location
+		PRIMARY KEY (
+			loc_sn
+		);
+
+/* 관리자가 신규 선택항목(지역) 추가 (지역고유번호는 시퀀스 이용해야할 것 같음)*/
+
+INSERT INTO location(loc_sn,loc_name)
+VALUES(지역고유번호, 지역이름)
+
+
+/* 관리자가 지역고유번호를 입력하여 해당하는 선택항목(지역) 수정 */
+
+UPDATE location
+SET (수정할 컬럼) = (수정할 내용)
+WHERE loc_sn=?
+
+/* 관리자가 지역고유번호를 입력하여 해당하는 선택항목(지역)삭제 */
+ 
+DELETE FROM location
+WHERE loc_sn=?
+=====================================================
+
+
+
+ALTER TABLE cart
+	ADD
+		CONSTRAINT FK_customer_TO_cart
+		FOREIGN KEY (
+			customer_no
+		)
+		REFERENCES customer (
+			customer_no
+		);
+
+ALTER TABLE cart
+	ADD
+		CONSTRAINT FK_member_TO_cart
+		FOREIGN KEY (
+			member_id
+		)
+		REFERENCES member (
+			member_id
+		);
+
+ALTER TABLE cart
+	ADD
+		CONSTRAINT FK_goods_TO_cart
+		FOREIGN KEY (
+			goods_no
+		)
+		REFERENCES goods (
+			goods_no
+		);
+
+ALTER TABLE review
+	ADD
+		CONSTRAINT FK_goods_TO_review
+		FOREIGN KEY (
+			goods_no
+		)
+		REFERENCES goods (
+			goods_no
+		);
+
+ALTER TABLE shop_list
+	ADD
+		CONSTRAINT FK_location_TO_shop_list
+		FOREIGN KEY (
+			loc_sn
+		)
+		REFERENCES location (
+			loc_sn
+		);
+
+ALTER TABLE shop_list
+	ADD
+		CONSTRAINT FK_goods_TO_shop_list
+		FOREIGN KEY (
+			goods_no
+		)
+		REFERENCES goods (
+			goods_no
+		);
+        
+    
+        
+        
